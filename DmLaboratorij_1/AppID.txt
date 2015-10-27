@@ -1,0 +1,4 @@
+﻿App name: DM_lab1
+App ID: 1235046306522295
+API version: 2.5
+App secret: c92f9b8b1c469de80bbd3dc25006c5c2
