@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 
 //ERIK TEST COMMENT
+//COMMENT2
 
 namespace DmLaboratorij_1.Controllers
 {
