@@ -5,11 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 
 
-
-//ERIK TEST COMMENT
-//COMMENT2
-//DODAJEM KOMENTAR 3 .
-
 namespace DmLaboratorij_1.Controllers
 {
     public class HomeController : Controller
