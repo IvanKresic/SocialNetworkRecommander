@@ -45,7 +45,13 @@ function testAPI() {
         console.log('Successful login for: ' + response.name);
         document.getElementById('status').innerHTML =
           'Thanks for logging in, ' + response.name + '!';
-    });
+    });}
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
 
     function statusChangeCallback(response) {
         console.log('statusChangeCallback');
@@ -68,4 +74,3 @@ function testAPI() {
               'into Facebook.';
         }
     }
-}
