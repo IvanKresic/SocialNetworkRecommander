@@ -25,7 +25,7 @@ FB.login(function (response) {
         // they are logged into this app or not.
     }
 });
-//FB.login(function (response) {
+//FB.login(function (response) { 
 //    // handle the response
 //}, { scope: 'public_profile,email' });
 
