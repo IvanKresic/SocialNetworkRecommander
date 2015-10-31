@@ -14,6 +14,7 @@
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+
 FB.login(function (response) {
     if (response.status === 'connected') {
         // Logged into your app and Facebook.
@@ -30,7 +31,19 @@ FB.login(function (response) {
 
 FB.getLoginStatus(function (response) {
     if (response.status === 'connected') {
-        console.log(response.authResponse.accessToken);
+        // the user is logged in and has authenticated your
+        // app, and response.authResponse supplies
+        // the user's ID, a valid access token, a signed
+        // request, and the time the access token 
+        // and signed request each expire
+        var uid = response.authResponse.userID;
+        var accessToken = response.authResponse.accessToken;
+        console.log(accessToken+"Here I ammmmm");
+    } else if (response.status === 'not_authorized') {
+        // the user is logged in to Facebook, 
+        // but has not authenticated your app
+    } else {
+        // the user isn't logged in to Facebook.
     }
 });
 
