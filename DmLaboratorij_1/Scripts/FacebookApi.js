@@ -42,9 +42,9 @@ function getLoginStatus() {
             // request, and the time the access token 
             // and signed request each expire
             var uid = response.authResponse.userID;
-            var accessToken = response.authResponse.accessToken;
-            var userID = response.authResponse.userID;
-            console.log(accessToken + "  " + userID);
+            var accessToken = response.authResponse.accessToken;            
+            var data = uid + "#" + accessToken;
+            checkValidId(data);
         } else if (response.status === 'not_authorized') {
             console.log("The user is logged in to Facebook, but has not authenticated your app");
         } else {
@@ -53,6 +53,23 @@ function getLoginStatus() {
     });
 }
 
+//**********AJAX POZIV PREMA CONTROLLER-u***********
+function checkValidId(data) {
+    $.ajax({
+        url: 'UserInfoController/Test',
+        type: 'POST',
+        contentType: 'application/json;',
+        //data: JSON.stringify({ id: data }),
+        success: function (valid) {
+            if (valid) {
+                console.log("HURAAAAY!!!");
+            } else {
+                console.log("FUCK");
+            }
+        }
+    });
+}
+//***************************************************
 
 FB.api('/me', function (response) {
     console.log(JSON.stringify(response));
