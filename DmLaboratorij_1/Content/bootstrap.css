@@ -892,6 +892,13 @@ pre code {
   width: 33.33333333333333%;
 }
 
+#zamolba{
+    font-size:large;
+    margin: auto;
+    font-weight:bold;
+    visibility:hidden;
+}
+
 .col-xs-5 {
   width: 41.66666666666667%;
 }

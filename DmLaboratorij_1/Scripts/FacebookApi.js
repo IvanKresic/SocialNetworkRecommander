@@ -4,6 +4,10 @@
         xfbml: true,
         version: 'v2.5'
     });
+
+    if (typeof facebookInit == 'function') {
+        facebookInit();
+    }
 };
 
 (function (d, s, id) {
@@ -42,10 +46,9 @@ function getLoginStatus() {
             var userID = response.authResponse.userID;
             console.log(accessToken + "  " + userID);
         } else if (response.status === 'not_authorized') {
-            // the user is logged in to Facebook, 
-            // but has not authenticated your app
+            console.log("The user is logged in to Facebook, but has not authenticated your app");
         } else {
-            // the user isn't logged in to Facebook.
+            console.log("The user is not logged in to Facebook.");
         }
     });
 }
@@ -58,10 +61,13 @@ FB.api('/me', function (response) {
 function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function (response) {
-        console.log('Successful login for: ' + response.name);
-        document.getElementById('status').innerHTML =
-          'Thanks for logging in, ' + response.name + '!';
-});}
+        console.log('Successful login for: ' + response.name.split(" ")[0]);
+        document.getElementById("zamolba").innerHTML =
+          '<br /><br /><center>Hvala na prijavi, ' + response.name.split(" ")[0] + '!</center>';
+        document.getElementById("zamolba").visibility = 'visible';
+    });
+    //getLoginStatus();
+}
 
 function checkLoginState() {
         FB.getLoginStatus(function (response) {
@@ -90,7 +96,7 @@ function statusChangeCallback(response) {
     } else {
         // The person is not logged into Facebook, so we're not sure if
         // they are logged into this app or not.
-        document.getElementById('status').innerHTML = 'Please log ' +
-          'into Facebook.';
+        document.getElementById("zamolba").innerHTML = '<br /><br /><center>Molimo se prijavite u sustav</center>';
+        document.getElementById("zamolba").visibility = 'visible';
     }
 }

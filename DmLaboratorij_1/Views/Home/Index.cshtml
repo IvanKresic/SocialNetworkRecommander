@@ -1,9 +1,11 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    
 }
+<script type="text/javascript">
+    console.log('zamolba');
+    getLoginStatus()
+</script>
 
-
+<div id="zamolba"><br /><br /><center>Molimo se prijavite u sustav</center></div>
 <div style="margin-left:40%;margin-top:10%;" scope="public_profile, email, user_friends, user_birthday, user_hometown, user_likes, user_relationships" class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="true" onlogin="checkLoginState();"></div>
-<div onload="getLoginStatus();"></div>
-<div id="status">
-</div>

@@ -8,11 +8,11 @@
     @Scripts.Render("~/bundles/modernizr")
    
     <script src="~/Scripts/FacebookApi.js">
-         
+
     </script>
 </head>
 <body>
-<div onload="checkLoginState();"></div>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -21,7 +21,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Društveni prepručitelj", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Društveni preporučitelj", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 @Html.ActionLink("O aplikaciji", "About", new { area = "" }, new { @class = "navbar-brand" })
             </div>
         </div>
@@ -30,7 +30,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Društvene Mreže - Team 16</p>
+            <center><p>&copy; @DateTime.Now.Year - Društvene Mreže - Team 16</p></center>
         </footer>
     </div>
 
