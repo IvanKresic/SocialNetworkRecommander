@@ -160,24 +160,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\SocialNetworksDataSet.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SocialNetworksDataSet.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SocialNetworksDataSet.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SocialNetworksDataSet.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SocialNetworksDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SocialNetworksDataSet.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\userInfo.cs">
-      <DependentUpon>SocialNetworksDataSet.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Shared\SocialNetworksDatabase.Context.cs">
       <AutoGen>True</AutoGen>
@@ -206,25 +189,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\SocialNetworksDataSet.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SocialNetworksDataSet.edmx</DependentUpon>
-      <LastGenOutput>SocialNetworksDataSet.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\SocialNetworksDataSet.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SocialNetworksDataSet.edmx</DependentUpon>
-      <LastGenOutput>SocialNetworksDataSet.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\SocialNetworksDataSet.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SocialNetworksDataSet.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\SocialNetworksDataSet.edmx.diagram">
-      <DependentUpon>SocialNetworksDataSet.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\FacebookApi.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -272,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
