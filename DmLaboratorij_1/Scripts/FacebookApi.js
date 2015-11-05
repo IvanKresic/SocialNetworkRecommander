@@ -138,7 +138,7 @@ function showData() {
         'Prezime: ' + response.last_name + '<br>' +
         'Mjesto: ' + response.hometown.name + '<br>'+
         'Rodjandan: ' + response.birthday + '<br>'+
-        'Veza: ' + response.relationship_status + '<br>'
+        'Veza: ' + response.relationship_status + '<br>'+'<br><br>' 
         ;
     });
 
@@ -147,8 +147,11 @@ function showData() {
             var a = entry.id;
             FB.api(a + '/picture?width=100&height=100', function (response) {
                 var element = document.getElementById("UserMovies");
-                element.innerHTML = element.innerHTML + '<img src=' + response.data.url + ' alt="' + entry.name + 'hspace="5" vspace="5">';
-                console.log(entry.name);
+                var url = response.data.url;
+
+                FB.api(a, { fields: 'link' }, function (response) {
+                    element.innerHTML = element.innerHTML + '<a href="'+response.link+'"> <img src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a>';
+                });
             });
         });
     });
