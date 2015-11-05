@@ -134,11 +134,11 @@ function showData() {
     FB.api('/me', { fields: 'first_name,last_name,hometown,birthday,relationship_status' }, function (response) {
         document.getElementById("UserData").innerHTML =
         '<br><br>' +
-        'Ime: ' + response.first_name + '<br>'+
-        'Prezime: ' + response.last_name + '<br>' +
-        'Mjesto: ' + response.hometown.name + '<br>'+
-        'Rodjandan: ' + response.birthday + '<br>'+
-        'Veza: ' + response.relationship_status + '<br>'+'<br><br>' 
+        response.first_name + ' '+
+        response.last_name + '<br>' +
+        response.hometown.name + '<br>'+
+        response.birthday + '<br>'+
+        response.relationship_status + '<br>'+'<br><br>' 
         ;
     });
 
