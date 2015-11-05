@@ -108,13 +108,13 @@ function statusChangeCallback(response) {
         testAPI();
     } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not your app.
-        document.getElementById('status').innerHTML = 'Please log ' +
-          'into this app.';
+        document.getElementById('UserPicture').innerHTML = '';
+        document.getElementById('UserData').innerHTML = '';
     } else {
         // The person is not logged into Facebook, so we're not sure if
         // they are logged into this app or not.
-        document.getElementById("zamolba").innerHTML = '<br /><br /><center>Molimo se prijavite u sustav</center>';
-        document.getElementById("zamolba").visibility = 'visible';
+        document.getElementById('UserPicture').innerHTML = '';
+        document.getElementById('UserData').innerHTML = '';
     }
 }
 
@@ -124,10 +124,14 @@ function showFourth() {
 
 function showData() {
 
-    document.getElementById("UserData").innerHTML = 'BOK';
-
+    FB.api('/me/picture?height=300&width=300', function (response) {
+        document.getElementById("UserPicture").innerHTML = '<br><br><img src="'+response.data.url+'">';
+    });
+    
+    
     FB.api('/me', { fields: 'first_name,last_name,hometown,birthday,relationship_status' }, function (response) {
-        document.getElementById("UserData").innerHTML = '<br><br><br>'+
+        document.getElementById("UserData").innerHTML =
+        '<br><br>' +
         'Ime: ' + response.first_name + '<br>'+
         'Prezime: ' + response.last_name + '<br>' +
         'Mjesto: ' + response.hometown.name + '<br>'+
