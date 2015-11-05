@@ -110,11 +110,13 @@ function statusChangeCallback(response) {
         // The person is logged into Facebook, but not your app.
         document.getElementById('UserPicture').innerHTML = '';
         document.getElementById('UserData').innerHTML = '';
+        document.getElementById('UserMovies').innerHTML = '';
     } else {
         // The person is not logged into Facebook, so we're not sure if
         // they are logged into this app or not.
         document.getElementById('UserPicture').innerHTML = '';
         document.getElementById('UserData').innerHTML = '';
+        document.getElementById('UserMovies').innerHTML = '';
     }
 }
 
@@ -138,5 +140,20 @@ function showData() {
         'Rodjandan: ' + response.birthday + '<br>'+
         'Veza: ' + response.relationship_status + '<br>'
         ;
+    });
+
+    FB.api('/me/movies', function (response) {
+        response.data.forEach(function (entry) {
+            var a = entry.id;
+            FB.api(a + '/picture?width=100&height=100', function (response) {
+                var element = document.getElementById("UserMovies");
+                element.innerHTML = element.innerHTML + '<img src=' + response.data.url + ' alt="' + entry.name + 'hspace="5" vspace="5">';
+                console.log(entry.name);
+            });
+        });
+    });
+
+    FB.api(a + '/picture?width=100&height=100', function (response) {
+        console.log(response);
     });
 }
