@@ -93,7 +93,9 @@ hr {
   -moz-box-sizing: content-box;
        box-sizing: content-box;
 }
-
+#UserData{
+    text-align: center;
+}
 mark {
   color: #000;
   background: #ff0;

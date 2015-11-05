@@ -7,13 +7,12 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Web.Http;
 using Newtonsoft.Json;
-using DmLaboratorij_1.Models;
 using System.Runtime.Serialization.Json;
 
 namespace DmLaboratorij_1.Controllers
 {
     public class UserInfoController : ApiController
-    {
+    {/*
         private DM_DBEntities1 db = new DM_DBEntities1();
 
         [HttpPost]
@@ -33,5 +32,6 @@ namespace DmLaboratorij_1.Controllers
             return myList;
         }
 
+    }*/
     }
 }

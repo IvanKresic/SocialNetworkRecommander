@@ -16,7 +16,7 @@ namespace DmLaboratorij_1.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application descripti page.";
+            ViewBag.Message = "Your application description page.";
 
             return View();
         }
