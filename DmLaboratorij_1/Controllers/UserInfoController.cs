@@ -8,6 +8,9 @@ using System.Data.Entity.Infrastructure;
 using System.Web.Http;
 using Newtonsoft.Json;
 using System.Runtime.Serialization.Json;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace DmLaboratorij_1.Controllers
 {
