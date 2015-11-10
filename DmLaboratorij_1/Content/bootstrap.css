@@ -94,10 +94,11 @@ hr {
        box-sizing: content-box;
 }
 #UserData{
-  color: #000000;
+  color: #7d4627;
   font-family: verdana;
   font-size: 16px;
   line-height: 20px;
+  font-weight: bold;
 }
 
 
@@ -455,6 +456,26 @@ cite {
 
 .text-info {
   color: #3a87ad;
+}
+
+.FilmItem{
+    background-color: #a8b6bf;
+    width:98%;
+    margin:10px;
+    box-shadow: 5px 5px 5px grey;
+}
+.FilmPicture{
+    margin:6px;
+}
+.FilmPicture, .NaslovIOpis
+{
+    display:inline;
+}
+UserMovies{
+    text-align:center;
+}
+UserPicture{
+    background-color:#7d4627;
 }
 
 .text-left {

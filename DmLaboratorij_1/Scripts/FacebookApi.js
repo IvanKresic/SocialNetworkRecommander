@@ -144,13 +144,15 @@ function showData() {
 
     FB.api('/me/movies', function (response) {
         response.data.forEach(function (entry) {
+
+
             var a = entry.id;
             FB.api(a + '/picture?width=100&height=100', function (response) {
                 var element = document.getElementById("UserMovies");
                 var url = response.data.url;
 
                 FB.api(a, { fields: 'link' }, function (response) {
-                    element.innerHTML = element.innerHTML + '<a href="'+response.link+'"> <img src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a>';
+                    element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link + '"> <img class="FilmPicture" src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a><div class="NaslovIOpis"><div class="Naslov">' + entry.name + '</div><div class="Opis">Lorem ipsum et domen</div></div></div>';
                 });
             });
         });
