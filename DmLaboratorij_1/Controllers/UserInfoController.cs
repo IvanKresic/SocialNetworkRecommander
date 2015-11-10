@@ -6,6 +6,8 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using DmLaboratorij_1.Models;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace DmLaboratorij_1.Controllers
 {
@@ -19,10 +21,18 @@ namespace DmLaboratorij_1.Controllers
         }
 
         // GET api/values/5
-        
-        public string Get(int id)
+
+        public async Task<List<UserModel>> Get(string Facebook_ID)
         {
-            return "value";
+            var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
+            var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
+
+            List<UserModel> userModel = new List<UserModel>();
+            var collection = mongoDbServer.GetCollection<BsonDocument>("UserInfo");
+            var filter = Builders<BsonDocument>.Filter.Eq("Facebook_ID", Facebook_ID);
+            var result = await collection.Find(filter).ToListAsync();
+            //userModel.Add(result);
+            return userModel;
         }
 
         // POST api/values
