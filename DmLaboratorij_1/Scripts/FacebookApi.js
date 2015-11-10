@@ -159,6 +159,7 @@ function showData() {
 
         console.log(userInfo);
         checkValidId(userInfo);
+        getMovieInfo();
     });
 
     function getMovieInfo() {
