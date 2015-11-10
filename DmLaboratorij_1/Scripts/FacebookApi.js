@@ -44,8 +44,7 @@ function getLoginStatus() {
             var uid = response.authResponse.userID;
             var accessToken = response.authResponse.accessToken;            
             var data = uid + "#" + accessToken;
-            //console.log(response);
-            //checkValidId(response);
+            checkValidId(data);
         } else if (response.status === 'not_authorized') {
             console.log("The user is logged in to Facebook, but has not authenticated your app");
         } else {
@@ -56,16 +55,11 @@ function getLoginStatus() {
 
 //**********AJAX POZIV PREMA CONTROLLER-u***********
 function checkValidId(data) {
-
     $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
         url: 'api/UserInfo',
-        type: 'POST',
+        type: 'GET',
         contentType: 'application/json;',
-        data: JSON.stringify(data),
+        //data: JSON.stringify({ id: data }),
         success: function (valid) {
             if (valid) {
                 console.log("HURAAAAY!!!");
@@ -146,38 +140,25 @@ function showData() {
         response.birthday + '<br>'+
         response.relationship_status + '<br>'+'<br><br>' 
         ;
-        var userInfo =
-            {
-                Facebook_ID : response.id,
-                Ime: response.first_name,
-                Prezime: response.last_name,
-                Email: response.Email,
-                DatumRodjenja: response.birthday,
-                Hometown: response.hometown.name,
-            }
-
-
-        console.log(userInfo);
-        checkValidId(userInfo);
     });
 
-    function getMovieInfo() {
-        FB.api('/me/movies', function (response) {
-            response.data.forEach(function (entry) {
-                var a = entry.id;
-                FB.api(a + '/picture?width=100&height=100', function (response) {
-                    var element = document.getElementById("UserMovies");
-                    var url = response.data.url;
+    FB.api('/me/movies', function (response) {
+        response.data.forEach(function (entry) {
 
-                    FB.api(a, { fields: 'link' }, function (response) {
-                        element.innerHTML = element.innerHTML + '<a href="' + response.link + '"> <img src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a>';
-                    });
+
+            var a = entry.id;
+            FB.api(a + '/picture?width=100&height=100', function (response) {
+                var element = document.getElementById("UserMovies");
+                var url = response.data.url;
+
+                FB.api(a, { fields: 'link' }, function (response) {
+                    element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link + '"> <img class="FilmPicture" src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a><div class="NaslovIOpis"><div class="Naslov">' + entry.name + '</div><div class="Opis">Lorem ipsum et domen</div></div></div>';
                 });
             });
         });
+    });
 
-        FB.api(a + '/picture?width=100&height=100', function (response) {
-            console.log(response);
-        });
-    }
+    FB.api(a + '/picture?width=100&height=100', function (response) {
+        console.log(response);
+    });
 }
