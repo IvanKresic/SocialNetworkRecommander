@@ -44,7 +44,8 @@ function getLoginStatus() {
             var uid = response.authResponse.userID;
             var accessToken = response.authResponse.accessToken;            
             var data = uid + "#" + accessToken;
-            checkValidId(data);
+            //console.log(response);
+            //checkValidId(response);
         } else if (response.status === 'not_authorized') {
             console.log("The user is logged in to Facebook, but has not authenticated your app");
         } else {
@@ -55,11 +56,16 @@ function getLoginStatus() {
 
 //**********AJAX POZIV PREMA CONTROLLER-u***********
 function checkValidId(data) {
+
     $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
         url: 'api/UserInfo',
-        type: 'GET',
+        type: 'POST',
         contentType: 'application/json;',
-        //data: JSON.stringify({ id: data }),
+        data: JSON.stringify(data),
         success: function (valid) {
             if (valid) {
                 console.log("HURAAAAY!!!");
@@ -72,7 +78,7 @@ function checkValidId(data) {
 //***************************************************
 
 FB.api('/me', function (response) {
-    console.log(JSON.stringify(response)); 
+    console.log(JSON.stringify(response));
 });
 
 function testAPI() {
@@ -140,8 +146,22 @@ function showData() {
         response.birthday + '<br>'+
         response.relationship_status + '<br>'+'<br><br>' 
         ;
+        var userInfo =
+            {
+                Facebook_ID : response.id,
+                Ime: response.first_name,
+                Prezime: response.last_name,
+                Email: response.Email,
+                DatumRodjenja: response.birthday,
+                Hometown: response.hometown.name,
+            }
+
+
+        console.log(userInfo);
+        checkValidId(userInfo);
     });
 
+    function getMovieInfo() {
     FB.api('/me/movies', function (response) {
         response.data.forEach(function (entry) {
 
@@ -161,4 +181,5 @@ function showData() {
     FB.api(a + '/picture?width=100&height=100', function (response) {
         console.log(response);
     });
+}
 }
