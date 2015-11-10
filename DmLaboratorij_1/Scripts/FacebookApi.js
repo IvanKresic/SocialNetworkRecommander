@@ -56,15 +56,15 @@ function getLoginStatus() {
 //**********AJAX POZIV PREMA CONTROLLER-u***********
 function checkValidId(data) {
     $.ajax({
-        url: 'UserInfoController/Test',
-        type: 'POST',
+        url: 'api/UserInfo',
+        type: 'GET',
         contentType: 'application/json;',
         //data: JSON.stringify({ id: data }),
         success: function (valid) {
             if (valid) {
                 console.log("HURAAAAY!!!");
             } else {
-                console.log("FUCK");
+                console.log("juhu!");
             }
         }
     });
