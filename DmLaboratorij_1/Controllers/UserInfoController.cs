@@ -23,7 +23,7 @@ namespace DmLaboratorij_1.Controllers
         // GET api/values/5
 
         public async Task<List<UserModel>> Get(string Facebook_ID)
-        {
+        { 
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
 
