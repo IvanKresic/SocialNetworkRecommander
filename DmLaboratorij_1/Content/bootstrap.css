@@ -101,6 +101,10 @@ hr {
   font-weight: bold;
 }
 
+#ProfilePic{ 
+   border:10px solid #fff;
+}
+
 
 
 mark {
@@ -464,19 +468,27 @@ cite {
     margin:10px;
     box-shadow: 5px 5px 5px grey;
 }
+.NaslovIOpis{
+    width:80%
+}
+.Naslov {
+    color: #7d4627;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight:bold;
+    margin-bottom:16px;
+}
 .FilmPicture{
     margin:6px;
 }
-.FilmPicture, .NaslovIOpis
+.FilmPicture,.NaslovIOpis
 {
-    display:inline;
+    display:inline-block;
 }
 UserMovies{
     text-align:center;
 }
-UserPicture{
-    background-color:#7d4627;
-}
+
 
 .text-left {
   text-align: left;
@@ -4431,7 +4443,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-  color: #5e5e5e;
+  color: #fff;
   background-color: transparent;
 }
 
@@ -4543,7 +4555,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-brand {
-  color: #999999;
+  color: #fff;
 }
 
 .navbar-inverse .navbar-brand:hover,
