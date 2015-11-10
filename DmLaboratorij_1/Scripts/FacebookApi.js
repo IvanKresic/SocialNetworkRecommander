@@ -72,7 +72,7 @@ function checkValidId(data) {
 //***************************************************
 
 FB.api('/me', function (response) {
-    console.log(JSON.stringify(response));
+    console.log(JSON.stringify(response)); 
 });
 
 function testAPI() {
