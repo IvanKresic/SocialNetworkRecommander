@@ -31,7 +31,7 @@ namespace DmLaboratorij_1.Controllers
             var collection = mongoDbServer.GetCollection<BsonDocument>("UserInfo");
             var filter = Builders<BsonDocument>.Filter.Eq("Facebook_ID", Facebook_ID);
             var result = await collection.Find(filter).ToListAsync();
-            //userModel.Add(result);
+            userModel.Add(result);
             return userModel;
         }
 
