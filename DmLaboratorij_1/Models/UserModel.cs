@@ -9,7 +9,7 @@ namespace DmLaboratorij_1.Models
     {
         public object _id { get; set; } //MongoDb uses this field as identity.
 
-        public int Facebook_ID { get; set; }
+        public string Facebook_ID { get; set; }
 
         public string Ime { get; set; }
 
@@ -18,6 +18,8 @@ namespace DmLaboratorij_1.Models
         public string Email { get; set; }
 
         public string DatumRodjenja { get; set; }
+
+        public string Hometown { get; set; }
 
         public string JSON_Objekt { get; set; }
     }
