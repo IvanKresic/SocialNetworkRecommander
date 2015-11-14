@@ -150,7 +150,7 @@ function showFourth() {
 function showData() {
 
     FB.api('/me/picture?height=300&width=300', function (response) {
-        document.getElementById("UserPicture").innerHTML = '<br><br><img src="'+response.data.url+'">';
+        document.getElementById("UserPicture").innerHTML = '<br><br><img id=ProfilePic src="'+response.data.url+'">';
     });
     
     
@@ -190,7 +190,8 @@ function showData() {
                 var url = response.data.url;
 
                 FB.api(a, { fields: 'link' }, function (response) {
-                    element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link + '"> <img class="FilmPicture" src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a><div class="NaslovIOpis"><div class="Naslov">' + entry.name + '</div><div class="Opis">Lorem ipsum et domen</div></div></div>';
+                    element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link +
+                        '"> <img class="FilmPicture" src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a><div class="NaslovIOpis" ><div class="Naslov">' + entry.name + '</div><div class="Opis">Lorem ipsum et domen</div></div></div>';
                 });
             });
         });
