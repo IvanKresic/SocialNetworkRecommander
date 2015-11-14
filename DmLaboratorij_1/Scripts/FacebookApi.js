@@ -56,7 +56,6 @@ function getLoginStatus() {
 
 //**********AJAX POZIV PREMA CONTROLLER-u***********
 function checkValidId(data) {
-
     $.ajax({
         headers: {
             'Accept': 'application/json',
@@ -71,6 +70,24 @@ function checkValidId(data) {
                 console.log("HURAAAAY!!!");
             } else {
                 console.log("juhu!");
+            }
+        }
+    });
+    //***********
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        url: 'api/UserInfo/' + data.Facebook_ID,
+        type: 'GET',
+        contentType: 'application/json;',
+        //data: JSON.stringify(data.Facebook_ID),
+        success: function (valid) {
+            if (valid) {
+                console.log("GET  HURAAAAY!!!" + JSON.stringify(valid));
+            } else {
+                console.log("GET JUHU" + valid);
             }
         }
     });

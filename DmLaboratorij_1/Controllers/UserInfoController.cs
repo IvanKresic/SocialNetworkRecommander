@@ -14,32 +14,42 @@ namespace DmLaboratorij_1.Controllers
     public class UserInfoController : ApiController
     {
 
-        [Authorize]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[Authorize]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "ovo ne želimo" };
+        //}
 
         // GET api/values/5
-
-        public async Task<List<UserModel>> Get(string Facebook_ID)
+        
+        [HttpGet]
+        public async Task<UserModel> Get(string Facebook_ID)
         { 
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
 
-            List<UserModel> userModel = new List<UserModel>();
+
+            UserModel user = new UserModel();
             var collection = mongoDbServer.GetCollection<BsonDocument>("UserInfo");
             var filter = Builders<BsonDocument>.Filter.Eq("Facebook_ID", Facebook_ID);
-            var result = await collection.Find(filter).ToListAsync();
-            //userModel.Add(result);
-            return userModel;
+            var result = await collection.Find(filter).ToListAsync();        
+            foreach(BsonDocument item in result)
+            {
+                user.Facebook_ID = item.GetElement("Facebook_ID").Value.ToString();
+                user.Ime = item.GetElement("Ime").Value.ToString();
+                user.Prezime = item.GetElement("Prezime").Value.ToString();
+                user.Email = item.GetElement("Email").Value.ToString();
+                user.DatumRodjenja = item.GetElement("DatumRodjenja").Value.ToString();
+                user.Hometown = item.GetElement("Hometown").Value.ToString();
+                user.JSON_Objekt = item.GetElement("JSON_Objekt").Value.ToString();
+            }
+            return user;
         }
 
         // POST api/values
         [HttpPost]  
         public void Post(UserModel model)
-        {
-            
+        {            
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
 
