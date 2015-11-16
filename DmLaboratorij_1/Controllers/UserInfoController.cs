@@ -46,8 +46,7 @@ namespace DmLaboratorij_1.Controllers
                 user.Prezime = item.GetElement("Prezime").Value.ToString();
                 user.Email = item.GetElement("Email").Value.ToString();
                 user.DatumRodjenja = item.GetElement("DatumRodjenja").Value.ToString();
-                
-
+                user.Hometown = item.GetElement("Hometown").Value.ToString();
                 user.JSON_Objekt = item.GetElement("JSON_Objekt").Value.ToString();
                 user._id = item.GetElement("_id").Value.ToString();
             }
@@ -69,6 +68,7 @@ namespace DmLaboratorij_1.Controllers
                 { "Prezime", '"' + model.Prezime + '"' },
                 { "Email", '"' + model.Email + '"' },
                 { "DatumRodjenja", '"' + model.DatumRodjenja + '"' },
+                { "Hometown", '"'+model.Hometown+'"'},
                 { "JSON_Objekt", '"' + model.JSON_Objekt + '"' }
             };
 
