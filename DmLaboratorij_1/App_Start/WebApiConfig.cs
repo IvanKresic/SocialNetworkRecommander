@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace DmLaboratorij_1
 {
@@ -10,6 +11,8 @@ namespace DmLaboratorij_1
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
+            var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

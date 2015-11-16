@@ -54,7 +54,7 @@ function getLoginStatus() {
     });
 }
 
-//**********AJAX POZIV PREMA CONTROLLER-u***********
+//**********AJAX CONTROLLER CALL POST ***********
 function checkValidId(data) {
     $.ajax({
         headers: {
@@ -73,7 +73,8 @@ function checkValidId(data) {
             }
         }
     });
-    //***********
+
+    //*********** AJAX CONTROLLER CALL GET ***********
     $.ajax({
         headers: {
             'Accept': 'application/json',

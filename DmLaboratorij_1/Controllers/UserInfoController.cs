@@ -8,9 +8,12 @@ using MongoDB.Driver.Linq;
 using DmLaboratorij_1.Models;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http.Cors;
+using System.Web.Http.Description;
 
 namespace DmLaboratorij_1.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserInfoController : ApiController
     {
 
@@ -21,8 +24,10 @@ namespace DmLaboratorij_1.Controllers
         //}
 
         // GET api/values/5
-        
+
         [HttpGet]
+        [Route("api/UserInfo/{Facebook_ID}")]
+        [ResponseType(typeof(UserModel))]
         public async Task<UserModel> Get(string Facebook_ID)
         { 
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
