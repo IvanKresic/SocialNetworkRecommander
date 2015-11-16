@@ -67,7 +67,7 @@ function checkValidId(data) {
         data: JSON.stringify(data),
         success: function (valid) {
             if (valid) {
-                console.log("HURAAAAY!!!");
+                console.log("HURAAAsddadasdaAY!!!");
             } else {
                 console.log("juhu!");
             }
@@ -86,7 +86,7 @@ function checkValidId(data) {
         //data: JSON.stringify(data.Facebook_ID),
         success: function (valid) {
             if (valid) {
-                console.log("GET  HURAAAAY!!!" + JSON.stringify(valid));
+                console.log(valid);
             } else {
                 console.log("GET JUHU" + valid);
             }

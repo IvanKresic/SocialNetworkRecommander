@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using System.Web.Script.Serialization;
 
 namespace DmLaboratorij_1.Controllers
 {
@@ -32,11 +33,11 @@ namespace DmLaboratorij_1.Controllers
         { 
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
-
+            string facebookID = '"'+ Facebook_ID +'"';
 
             UserModel user = new UserModel();
             var collection = mongoDbServer.GetCollection<BsonDocument>("UserInfo");
-            var filter = Builders<BsonDocument>.Filter.Eq("Facebook_ID", Facebook_ID);
+            var filter = Builders<BsonDocument>.Filter.Eq("Facebook_ID", facebookID);
             var result = await collection.Find(filter).ToListAsync();        
             foreach(BsonDocument item in result)
             {
@@ -45,9 +46,12 @@ namespace DmLaboratorij_1.Controllers
                 user.Prezime = item.GetElement("Prezime").Value.ToString();
                 user.Email = item.GetElement("Email").Value.ToString();
                 user.DatumRodjenja = item.GetElement("DatumRodjenja").Value.ToString();
-                user.Hometown = item.GetElement("Hometown").Value.ToString();
+                
+
                 user.JSON_Objekt = item.GetElement("JSON_Objekt").Value.ToString();
+                user._id = item.GetElement("_id").Value.ToString();
             }
+            var json = new JavaScriptSerializer().Serialize(user);
             return user;
         }
 
