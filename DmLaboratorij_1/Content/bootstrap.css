@@ -469,7 +469,10 @@ cite {
     box-shadow: 5px 5px 5px grey;
 }
 .NaslovIOpis{
-    width:80%
+    width:80%;
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
 .Naslov {
     color: #7d4627;
@@ -480,6 +483,19 @@ cite {
 }
 .FilmPicture{
     margin:6px;
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+}
+.Ocjena{
+    font-weight:bold;
+    font-size:large;
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.tomato{
+    margin:3px;
 }
 .FilmPicture,.NaslovIOpis
 {
