@@ -8,6 +8,18 @@
     if (typeof facebookInit == 'function') {
         facebookInit();
     }
+
+    FB.login(function (response) {
+        if (response.status === 'connected') {
+            // Logged into your app and Facebook.
+            showData();
+        } else if (response.status === 'not_authorized') {
+            // The person is logged into Facebook, but not your app.
+        } else {
+            // The person is not logged into Facebook, so we're not sure if
+            // they are logged into this app or not.
+        }
+    });
 };
 
 (function (d, s, id) {
@@ -15,20 +27,12 @@
     if (d.getElementById(id)) { return; }
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.com/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
+    fjs.parentNode.insertBefore(js, fjs);    
 }(document, 'script', 'facebook-jssdk'));
 
 
-FB.login(function (response) {
-    if (response.status === 'connected') {
-        // Logged into your app and Facebook.
-    } else if (response.status === 'not_authorized') {
-        // The person is logged into Facebook, but not your app.
-    } else {
-        // The person is not logged into Facebook, so we're not sure if
-        // they are logged into this app or not.
-    }
-});
+
+
 //FB.login(function (response) { 
 //    // handle the response
 //}, { scope: 'public_profile,email' });
@@ -54,9 +58,8 @@ function getLoginStatus() {
     });
 }
 
-//**********AJAX POZIV PREMA CONTROLLER-u***********
+//**********AJAX CONTROLLER CALL POST ***********
 function checkValidId(data) {
-
     $.ajax({
         headers: {
             'Accept': 'application/json',
@@ -68,9 +71,28 @@ function checkValidId(data) {
         data: JSON.stringify(data),
         success: function (valid) {
             if (valid) {
-                console.log("HURAAAAY!!!");
+                console.log("HURAAAsddadasdaAY!!!");
             } else {
                 console.log("juhu!");
+            }
+        }
+    });
+
+    //*********** AJAX CONTROLLER CALL GET ***********
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        url: 'api/UserInfo/' + data.Facebook_ID,
+        type: 'GET',
+        contentType: 'application/json;',
+        //data: JSON.stringify(data.Facebook_ID),
+        success: function (valid) {
+            if (valid) {
+                console.log(valid);
+            } else {
+                console.log("GET JUHU" + valid);
             }
         }
     });
@@ -111,6 +133,7 @@ function statusChangeCallback(response) {
         //var userID = response.authResponse.userID;
         //console.log(accessToken + "  " + userID);
         // Logged into your app and Facebook.
+        console.log("HAHAHAHAHAHHAHAHAHA");
         testAPI();
     } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not your app.
@@ -132,8 +155,10 @@ function showFourth() {
 
 function showData() {
 
+    var userInfo;
+
     FB.api('/me/picture?height=300&width=300', function (response) {
-        document.getElementById("UserPicture").innerHTML = '<br><br><img id=ProfilePic src="'+response.data.url+'">';
+        document.getElementById("UserPicture").innerHTML = '<br><br><img id=ProfilePic src="' + response.data.url + '">';
     });
     
     
@@ -146,7 +171,7 @@ function showData() {
         response.birthday + '<br>'+
         response.relationship_status + '<br>'+'<br><br>' 
         ;
-        var userInfo =
+        userInfo =
             {
                 Facebook_ID : response.id,
                 Ime: response.first_name,
