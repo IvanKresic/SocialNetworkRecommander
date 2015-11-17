@@ -15,4 +15,4 @@ birthday,
 userFriends
 
 Koristeni APIji:
-Erik: omdbapi,
+Erik: omdbapi, 

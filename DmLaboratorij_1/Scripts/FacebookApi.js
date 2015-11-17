@@ -149,9 +149,6 @@ function statusChangeCallback(response) {
     }
 }
 
-function showFourth() {
-    document.getElementById("dbFetchResult").innerHTML = '<li>Valentino Munda<\li>';
-}
 
 function showData() {
 
