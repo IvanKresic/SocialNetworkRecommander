@@ -17,18 +17,6 @@ namespace DmLaboratorij_1.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserInfoController : ApiController
     {
-        //blablabalbal
-
-       //drugi poksaj
-           
-        //[Authorize]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "ovo ne želimo" };
-        //}
-
-        // GET api/values/5
-
         [HttpGet]
         [Route("api/UserInfo/{Facebook_ID}")]
         [ResponseType(typeof(UserModel))]
