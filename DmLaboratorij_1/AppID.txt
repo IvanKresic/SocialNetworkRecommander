@@ -13,3 +13,6 @@ likes,
 relationship_status,
 birthday,
 userFriends
+
+Koristeni APIji:
+Erik: omdbapi,
