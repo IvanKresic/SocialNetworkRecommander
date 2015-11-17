@@ -21,6 +21,8 @@ namespace DmLaboratorij_1.Models
 
         public string Hometown { get; set; }
 
-        public string JSON_Objekt { get; set; }
+        public string ProfilePictureLink { get; set; }
+
+        public string Movies { get; set; }
     }
 }
