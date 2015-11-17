@@ -17,7 +17,10 @@ namespace DmLaboratorij_1.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserInfoController : ApiController
     {
+        //blablabalbal
 
+           
+           
         //[Authorize]
         //public IEnumerable<string> Get()
         //{
