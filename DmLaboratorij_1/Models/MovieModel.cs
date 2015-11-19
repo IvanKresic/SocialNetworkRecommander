@@ -15,5 +15,12 @@ namespace DmLaboratorij_1.Models
         public string release_date { get; set; }
 
         public string vote_average { get; set; }
+
+        public string cast { get; set; }
+
+        public string crew { get; set; }
+
+        public string trailer { get; set; }
+
     }
 }

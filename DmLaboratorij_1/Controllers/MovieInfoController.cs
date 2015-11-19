@@ -32,6 +32,9 @@ namespace DmLaboratorij_1.Controllers
                 movie.overview = item.GetElement("overview").Value.ToString();
                 movie.release_date = item.GetElement("release_date").Value.ToString();
                 movie.vote_average = item.GetElement("vote_average").Value.ToString();
+                movie.cast = item.GetElement("cast").Value.ToString();
+                movie.crew = item.GetElement("crew").Value.ToString();
+                movie.trailer = item.GetElement("trailer").Value.ToString();
 
             }
             var json = new JavaScriptSerializer().Serialize(movie);
@@ -52,6 +55,9 @@ namespace DmLaboratorij_1.Controllers
                 { "overview", '"' + model.overview + '"' },
                 { "release_date", '"' + model.release_date + '"' },
                 { "vote_average", '"' + model.vote_average + '"' },
+                { "cast", '"' + model.cast + '"' },
+                { "crew", '"' + model.crew + '"' },
+                { "trailer", '"' + model.trailer + '"' },
             };
 
             var collection = mongoDbServer.GetCollection<BsonDocument>("MovieInfo");
