@@ -17,18 +17,6 @@ namespace DmLaboratorij_1.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class UserInfoController : ApiController
     {
-        //blablabalbal
-
-       //drugi poksaj
-           
-        //[Authorize]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "ovo ne želimo" };
-        //}
-
-        // GET api/values/5
-
         [HttpGet]
         [Route("api/UserInfo/{Facebook_ID}")]
         [ResponseType(typeof(UserModel))]
@@ -50,8 +38,10 @@ namespace DmLaboratorij_1.Controllers
                 user.Email = item.GetElement("Email").Value.ToString();
                 user.DatumRodjenja = item.GetElement("DatumRodjenja").Value.ToString();
                 user.Hometown = item.GetElement("Hometown").Value.ToString();
-                user.JSON_Objekt = item.GetElement("JSON_Objekt").Value.ToString();
+                user.ProfilePictureLink = item.GetElement("ProfilePictureLink").Value.ToString();
+                user.Movies = item.GetElement("Movies").Value.ToString();
                 user._id = item.GetElement("_id").Value.ToString();
+                
             }
             var json = new JavaScriptSerializer().Serialize(user);
             return user;
@@ -72,7 +62,8 @@ namespace DmLaboratorij_1.Controllers
                 { "Email", '"' + model.Email + '"' },
                 { "DatumRodjenja", '"' + model.DatumRodjenja + '"' },
                 { "Hometown", '"'+model.Hometown+'"'},
-                { "JSON_Objekt", '"' + model.JSON_Objekt + '"' }
+                { "ProfilePictureLink", '"' + model.ProfilePictureLink + '"' },
+                { "Movies", '"' + model.Movies + '"' }
             };
 
             var collection = mongoDbServer.GetCollection<BsonDocument>("UserInfo");

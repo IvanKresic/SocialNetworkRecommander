@@ -152,11 +152,42 @@ function statusChangeCallback(response) {
 
 function showData() {
 
-    var userInfo;
+    var userInfo =
+            {
+                Facebook_ID:"",
+                Ime:"",
+                Prezime:"",
+                Email:"",
+                DatumRodjenja:"",
+                Hometown:"",
+                ProfilePictureLink: "",
+                Movies:""
+            }
 
     FB.api('/me/picture?height=300&width=300', function (response) {
         document.getElementById("UserPicture").innerHTML = '<br><br><img id=ProfilePic src="' + response.data.url + '">';
+        userInfo.ProfilePictureLink += response.data.url;
     });
+
+    FB.api('/me/movies', function (response) {        
+        response.data.forEach(function (entry) {         
+            userInfo.Movies += entry.id+'#';
+            console.log(userInfo.Movies);
+            var a = entry.id;
+            FB.api(a + '/picture?width=100&height=100', function (response) {
+                var element = document.getElementById("UserMovies");
+                var url = response.data.url;              
+
+                FB.api(a, { fields: 'link' }, function (response) {
+                    element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link +
+                        '"> <img class="FilmPicture" src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a><div class="NaslovIOpis" ><div class="Naslov">' + entry.name + '</div><div class="Opis">Lorem ipsum et domen</div></div></div>';
+                    
+                });
+            });
+        });
+    });
+
+
     
     
     FB.api('/me', { fields: 'first_name,last_name,hometown,birthday,relationship_status' }, function (response) {
@@ -168,102 +199,20 @@ function showData() {
         response.birthday + '<br>'+
         response.relationship_status + '<br>'+'<br><br>' 
         ;
-        userInfo =
-            {
-                Facebook_ID : response.id,
-                Ime: response.first_name,
-                Prezime: response.last_name,
-                Email: response.Email,
-                DatumRodjenja: response.birthday,
-                Hometown: response.hometown.name,
-            }
+        
+        userInfo.Facebook_ID += response.id;
+        userInfo.Ime += response.first_name;
+        userInfo.Prezime += response.last_name;
+        userInfo.Email += response.Email;
+        userInfo.DatumRodjenja += response.birthday;
+        userInfo.Hometown += response.hometown.name;
 
 
         console.log(userInfo);
-        checkValidId(userInfo);
-        getMovieInfo();
+        checkValidId(userInfo);        
     });
-    /*
-    function getMovieInfo() {
-        FB.api('/me/movies', function (response) {
-            response.data.forEach(function (entry) {
 
-
-                var a = entry.id;
-                FB.api(a + '/picture?width=100&height=100', function (response) {
-                    var element = document.getElementById("UserMovies");
-                    var url = response.data.url;
-
-                    FB.api(a, { fields: 'link' }, function (response) {
-                        element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link +
-                            '"> <img class="FilmPicture" src=' + url + ' alt="' + entry.name + 'hspace="3px" vspace="3px" > </a><div class="NaslovIOpis" ><div class="Naslov">' + entry.name + '</div><div class="Opis">Lorem ipsum et domen</div></div></div>';
-                    });
-                });
-            });
-        });
-    }*/
-
-    function convertToSlug(Text) {
-        return Text
-            .toLowerCase()
-            .replace(/ /g, '-')
-            .replace(/[^\w-]+/g, '')
-        ;
-    }
-
-    function getMovieInfoPOSTER() {
-        FB.api('/me/movies', function (response) {
-            response.data.forEach(function (entry) {
-                var a = entry.id;
-
-                //FB.api(a + '/picture?width=100&height=100', function (response) {
-                $.getJSON("http://www.omdbapi.com/?t=" + convertToSlug(entry.name) + "&y=&plot=short&r=json", function (response) {
-                    var posterURL = response.Poster;
-                    if ((posterURL == "N/A") || (posterURL == "undefined")) {
-                        posterURL = FB.api(a + '/picture?width=100&height=100', function (response) { return response.data.url; });
-                    }
-                    var element = document.getElementById("UserMovies");
-
-                    FB.api(a, { fields: 'link' }, function (response) {
-                        element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link +
-                            '"> <img class="FilmPicture" src=' + posterURL + ' hspace="3px" vspace="3px" width="100" > </a>\
-                            <div class="NaslovIOpis" ><div class="Naslov">'
-                            + entry.name + '</div><div class="Opis">Lorem ipsum et domen</div></div></div>';
-                    });
-                });
-            });
-        });
-    }
-
-    function trailerify(Text) {
-        return Text.replace(" ","%20");
-    }
-
-    function getMovieInfo() {
-        FB.api('/me/movies', function (response) {
-            response.data.forEach(function (entry) {
-                var a = entry.id;
-
-                $.getJSON("http://trailersapi.com/trailers.json?movie="+trailerify(entry.name), function (responseTRAILER) {
-
-                    $.getJSON("http://www.omdbapi.com/?t=" + convertToSlug(entry.name) + "&y=&plot=short&r=json&tomatoes=true", function (OMDBresponse) {
-
-
-                        FB.api(a + '/picture?width=100&height=100', function (response) {
-                            var element = document.getElementById("UserMovies");
-                            var url = response.data.url;
-
-                            FB.api(a, { fields: 'link' }, function (response) {
-                                element.innerHTML = element.innerHTML + '<div class="FilmItem"><a href="' + response.link +
-                                    '"> <img class="FilmPicture" src=' + url + ' alt="' + entry.name +
-                                    'hspace="3px" vspace="3px" > </a><div class="NaslovIOpis" ><div class="Naslov">' + entry.name + ' (' + OMDBresponse.Year + ')' +
-                                    ' <a href="' + responseTRAILER[0].code.split("\"")[5] + '"><img class="play" src="play.png" height="30" width="30"></a></div><div class="Opis">' + OMDBresponse.Plot + '</div><div class="Ocjena"><img class="tomato" src="fresh.png" height="25" width="25"> ' + OMDBresponse.tomatoUserMeter + '% </div></div></div>';
-                            });
-                        });
-                    });
-                });
-            });
-        });
-    }
-
+    FB.api(a + '/picture?width=100&height=100', function (response) {
+        console.log(response);
+    });
 }
