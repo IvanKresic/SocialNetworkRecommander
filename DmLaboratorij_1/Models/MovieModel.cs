@@ -22,5 +22,7 @@ namespace DmLaboratorij_1.Models
 
         public string trailer { get; set; }
 
+        public string genreIDs { get; set; }
+
     }
 }

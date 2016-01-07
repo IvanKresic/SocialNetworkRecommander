@@ -59,6 +59,9 @@ html {
 
 body {
   margin: 0;
+    background-image: url("background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 a:focus {
@@ -94,15 +97,32 @@ hr {
        box-sizing: content-box;
 }
 #UserData{
-  color: #7d4627;
-  font-family: verdana;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: bold;
+    position:fixed;    
+    margin-left:56.5%;
+    color: #7d4627;
+    font-family: verdana;
+    font-size: 11px;
+    line-height: 20px;
+    font-weight: bold;
+    float:right;
+    display:none;
+    background-color:white;
+    width:auto;
+    height:auto;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:15px;
+    border-bottom:1px solid black;
+    border-left:1px solid black;
+    border-right:1px solid black;
 }
 
+
 #ProfilePic{ 
-   border:10px solid #fff;
+   border:1px solid #fff;
+   display:inline;
+   float:right;
+   margin-top:9px;
 }
 
 
@@ -328,7 +348,7 @@ body {
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
-  background-color: #ffffff;
+
 }
 
 input,
@@ -462,29 +482,83 @@ cite {
   color: #3a87ad;
 }
 
+#start{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background-color:black;
+    opacity:0.7;
+    z-index:1;
+    display:block;
+}
+
+#wait{
+    position:fixed;
+    display:block;
+    z-index:2;
+    color:white;
+    font-size:30px;
+    text-decoration:double;
+    margin-left:46%;
+    margin-top:20%;    
+}
+
 .FilmItem{
     background-color: #a8b6bf;
     width:98%;
-    margin:10px;
+    margin-left:10px;
+    margin-top:10px;
     box-shadow: 5px 5px 5px grey;
+    float:left;
 }
+.Trailer
+{
+    display:none;
+    margin-top:0px;
+    clear:right;
+    background-color: #a8b6bf;    
+}
+
+.Information {
+   display:inline;
+}
+
+iframe{
+    
+    width:98%;
+    margin-left:10px;
+    margin-bottom:10px;
+    box-shadow: 5px 5px 5px grey;
+    float:left;
+    margin-top:10px;
+}
+
 .NaslovIOpis{
-    width:80%
+    width:85%;
+    float:left;
+    margin-top:5px;
 }
 .Naslov {
     color: #7d4627;
     font-family: verdana;
     font-size: 16px;
     font-weight:bold;
-    margin-bottom:16px;
+    margin-bottom:10px;
+    margin-top:10px;
+    display:inline;
 }
-.FilmPicture{
-    margin:6px;
-}
-.FilmPicture,.NaslovIOpis
+
+.FilmPicture
 {
     display:inline-block;
 }
+.posterFilm
+{
+    display:inline-block;
+    float:left;
+    margin:5px;
+}
+
 UserMovies{
     text-align:center;
 }

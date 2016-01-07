@@ -35,6 +35,7 @@ namespace DmLaboratorij_1.Controllers
                 movie.cast = item.GetElement("cast").Value.ToString();
                 movie.crew = item.GetElement("crew").Value.ToString();
                 movie.trailer = item.GetElement("trailer").Value.ToString();
+                movie.genreIDs = item.GetElement("genreIDs").Value.ToString();
 
             }
             var json = new JavaScriptSerializer().Serialize(movie);
@@ -58,6 +59,7 @@ namespace DmLaboratorij_1.Controllers
                 { "cast", '"' + model.cast + '"' },
                 { "crew", '"' + model.crew + '"' },
                 { "trailer", '"' + model.trailer + '"' },
+                { "genreIDs", '"' + model.genreIDs + '"' },
             };
 
             var collection = mongoDbServer.GetCollection<BsonDocument>("MovieInfo");
