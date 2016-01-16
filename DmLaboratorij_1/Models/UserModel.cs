@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace DmLaboratorij_1.Models
 {
     public class UserModel
@@ -19,6 +21,11 @@ namespace DmLaboratorij_1.Models
 
         public string ProfilePictureLink { get; set; }
 
-        public string Movies { get; set; }
+        public object Movies { get; set; }
+    }
+
+    public class Movie
+    {
+        public string Title { get; set; }
     }
 }

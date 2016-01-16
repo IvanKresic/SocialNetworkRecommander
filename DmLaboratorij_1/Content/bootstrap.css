@@ -99,11 +99,11 @@ hr {
 #UserData{
     position:fixed;    
     margin-left:56.5%;
-    color: #7d4627;
-    font-family: verdana;
+  color: #7d4627;
+  font-family: verdana;
     font-size: 11px;
-    line-height: 20px;
-    font-weight: bold;
+  line-height: 20px;
+  font-weight: bold;
     float:right;
     display:none;
     background-color:white;
@@ -534,9 +534,7 @@ iframe{
 }
 
 .NaslovIOpis{
-    width:85%;
-    float:left;
-    margin-top:5px;
+    width:80%
 }
 .Naslov {
     color: #7d4627;
@@ -547,10 +545,8 @@ iframe{
     margin-top:10px;
     display:inline;
 }
-
-.FilmPicture
-{
-    display:inline-block;
+.FilmPicture{
+    margin:6px;
 }
 .posterFilm
 {
