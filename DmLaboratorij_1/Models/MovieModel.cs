@@ -14,7 +14,7 @@ namespace DmLaboratorij_1.Models
 
         public string release_date { get; set; }
 
-        public string vote_average { get; set; }
+        public float vote_average { get; set; }
 
         public string cast { get; set; }
 
@@ -22,7 +22,9 @@ namespace DmLaboratorij_1.Models
 
         public string trailer { get; set; }
 
-        public string genreIDs { get; set; }
+        public string poster_url { get; set; }
+
+        public object genreIDs { get; set; }
 
     }
 }

@@ -21,6 +21,7 @@
         <div class="container">
 
             <div class="navbar-header" style="float:left;width:100%;margin-top:-40px;">
+                
                 <div id="UserPicture" onmouseover="userData();"></div>
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -29,7 +30,15 @@
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("Društveni preporučitelj", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("O aplikaciji", "About", new { area = "" }, new { @class = "navbar-brand" })
+                <div class="navbar-brand" style="cursor:pointer;">Reccomand</div>
+                <div class="navbar-brand dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="margin-top:-5px;font-weight:bold;">
+                        Categories
+                        <span class="caret"></span>
+                    </button>
+                    <ul id="listOfCategories" class="dropdown-menu" style="background-color:#333333;">
+                    </ul>
+                </div>
                 
             </div>
         </div>

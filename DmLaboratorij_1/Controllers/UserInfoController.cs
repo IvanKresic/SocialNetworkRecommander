@@ -60,8 +60,7 @@ namespace DmLaboratorij_1.Controllers
         {
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
-            BsonArray arr = new BsonArray();
-            
+            BsonArray arr = new BsonArray();            
             dynamic jobj = JsonConvert.DeserializeObject<dynamic>(model.Movies.ToString());
             foreach (var item in jobj)
             {
@@ -70,8 +69,6 @@ namespace DmLaboratorij_1.Controllers
                     arr.Add(subitem.Title.ToString());
                 }
             }
-
-
 
             var document = new BsonDocument
             {
@@ -84,20 +81,9 @@ namespace DmLaboratorij_1.Controllers
                 { "ProfilePictureLink", model.ProfilePictureLink  },
                 { "Movies",  arr },
             };
-            arr.GetType();
-
-            //var coll = mongoDbServer.GetCollection<UserModel>("UserInfo");
-            //foreach (var item in model.Movies)
-            //{
-            //    var filter = Builders<UserModel>.Filter.Where(x => x.Ime == model.Ime);
-            //    var update = Builders<UserModel>.Update.Push("Movies", item);
-            //    
-            //    await coll.FindOneAndUpdateAsync(filter, update);
-            //}
 
             var collection = mongoDbServer.GetCollection<BsonDocument>("UserInfo");
             collection.InsertOneAsync(document);
-
         }
 
         // PUT api/values/5

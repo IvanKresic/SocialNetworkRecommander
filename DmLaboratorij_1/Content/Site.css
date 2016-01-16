@@ -23,3 +23,15 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.categoryList
+{
+    color:white;
+    padding:5px;
+    cursor:pointer;
+}
+
+.categoryList :hover
+{
+    background-color:#3276b1;
+}

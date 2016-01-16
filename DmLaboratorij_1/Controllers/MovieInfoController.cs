@@ -8,6 +8,7 @@ using System.Web.Http.Description;
 using System.Web.Script.Serialization;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace DmLaboratorij_1.Controllers
 {
@@ -34,57 +35,67 @@ namespace DmLaboratorij_1.Controllers
                 movie.original_title = item.GetElement("original_title").Value.ToString();
                 movie.overview = item.GetElement("overview").Value.ToString();
                 movie.release_date = item.GetElement("release_date").Value.ToString();
-                movie.vote_average = item.GetElement("vote_average").Value.ToString();
+                movie.vote_average = float.Parse(item.GetElement("vote_average").Value.ToString()); 
                 movie.cast = item.GetElement("cast").Value.ToString();
                 movie.crew = item.GetElement("crew").Value.ToString();
                 movie.trailer = item.GetElement("trailer").Value.ToString();
                 movie.genreIDs = item.GetElement("genreIDs").Value.ToString();
+                movie.poster_url = item.GetElement("poster_url").Value.ToString();
                 allMovies.Add(movie);
-
-
             }
-          
+            
             var json = new JavaScriptSerializer().Serialize(allMovies);
             return allMovies;
         }
 
 
         [HttpGet]
-        [Route("api/MovieInfo/{Themoviedb_id}")]
+        [Route("api/MovieInfo/{id}")]
         [ResponseType(typeof(MovieModel))]
-        public async Task<MovieModel> Get(string Themoviedb_id)
+        public async Task<List<MovieModel>> Get(string id)
         {
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
-            string themoviedb_id = '"' + Themoviedb_id + '"';
 
-            MovieModel movie = new MovieModel();
+            List<MovieModel> selectedMovies = new List<MovieModel>();
             var collection = mongoDbServer.GetCollection<BsonDocument>("MovieInfo");
-            var filter = Builders<BsonDocument>.Filter.Eq("themoviedb_id", themoviedb_id);
-            var result = await collection.Find(filter).ToListAsync();
+            var filter = Builders<BsonDocument>.Filter.Eq("genreIDs", id);
+            var result = await collection.Find(filter).Limit(50).Sort(Builders<BsonDocument>.Sort.Ascending("vote_avarage").Descending("release_date")).ToListAsync();
             foreach (BsonDocument item in result)
             {
+                MovieModel movie = new MovieModel();
                 movie.themoviedb_id = item.GetElement("themoviedb_id").Value.ToString();
                 movie.original_title = item.GetElement("original_title").Value.ToString();
                 movie.overview = item.GetElement("overview").Value.ToString();
                 movie.release_date = item.GetElement("release_date").Value.ToString();
-                movie.vote_average = item.GetElement("vote_average").Value.ToString();
+                movie.vote_average = float.Parse(item.GetElement("vote_average").Value.ToString());
                 movie.cast = item.GetElement("cast").Value.ToString();
                 movie.crew = item.GetElement("crew").Value.ToString();
                 movie.trailer = item.GetElement("trailer").Value.ToString();
                 movie.genreIDs = item.GetElement("genreIDs").Value.ToString();
-
+                movie.poster_url = item.GetElement("poster_url").Value.ToString();
+                selectedMovies.Add(movie);
             }
-            var json = new JavaScriptSerializer().Serialize(movie);
-            return movie;
+            var json = new JavaScriptSerializer().Serialize(selectedMovies);
+            return selectedMovies;
         }
 
         // POST api/values
         [HttpPost]
+        [Route("api/MovieInfo/")]
         public void Post(MovieModel model)
         {
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
+            BsonArray arr = new BsonArray();
+            dynamic jobj = JsonConvert.DeserializeObject<dynamic>(model.genreIDs.ToString());
+            foreach (var item in jobj)
+            {
+                foreach(var subitem in item)
+                {
+                    arr.Add(subitem.ID.ToString());
+                }
+            }
 
             var document = new BsonDocument
             {
@@ -96,7 +107,8 @@ namespace DmLaboratorij_1.Controllers
                 { "cast",  model.cast  },
                 { "crew",  model.crew  },
                 { "trailer",  model.trailer  },
-                { "genreIDs", '['+ model.genreIDs +']' },
+                { "poster_url", model.poster_url},
+                { "genreIDs",  arr },
             };
 
             var collection = mongoDbServer.GetCollection<BsonDocument>("MovieInfo");

@@ -23,6 +23,11 @@
     });
 };
 
+
+var genreID;
+
+
+
 (function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) { return; }
@@ -62,6 +67,7 @@ function getLoginStatus() {
 
 //**********AJAX CONTROLLER CALL POST ***********
 function checkValidId(data, url, id) {
+    //console.log(JSON.stringify(data));
     $.ajax({
         headers: {
             'Accept': 'application/json',
@@ -192,14 +198,13 @@ function showData() {
     var movieInfo =
         {
             themoviedb_id:"",
-            original_title: "",
-            genreIDs:"",
+            original_title: "",            
             overview:"",
-            release_date:"",
-            vote_average: "",
+            release_date:"",           
             cast: "",
             crew: "",
-            trailer:""
+            trailer: "",
+            poster_url:"",
         }
 
     FB.api('/me', { fields: 'first_name,last_name,hometown,birthday,relationship_status' }, function (response) {
@@ -218,8 +223,6 @@ function showData() {
         userInfo.Email += response.Email;
         userInfo.DatumRodjenja += response.birthday;
         userInfo.Hometown += response.hometown.name;
-
-
         userInfo.Movies = {};
         var allMovies = {};
         var i = 0;
@@ -231,15 +234,93 @@ function showData() {
                 i++;
             })
             i = 0;
-            console.log("\n\n\n\n ovo su svi filmovi:");
-            console.log(userInfo.Movies);
-            console.log(userInfo);
             checkValidId(userInfo, userUrl, userInfo.Facebook_ID);
         });
         
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: 'api/Genres/',
+            type: 'GET',
+            contentType: 'application/json;',
+            //data: JSON.stringify(data.Facebook_ID),
+            success: function (valid) {
+                if (valid) {
+                    console.log("AAAAA");
+                    valid.forEach(function (category) {
+                        document.getElementById('listOfCategories').innerHTML += "<li id='" + category.genre_id + "'class='categoryList' onClick=thisCategory('" + category.genre_id+ "')>"
+                        +category.genre_type+"</li>";
+                    });
+                } else {
+                }
+            }
+        });
       
 });
 
+    thisCategory = function(id)
+    {
+        genreID = id;
+        var i = 0;
+        
+        var element = document.getElementById("UserMovies");
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: movieUrl + id,
+            type: 'GET',
+            contentType: 'application/json;',
+            //data: id,
+            success: function (valid) {
+                element.innerHTML = "";
+                if (valid) {
+                    valid.forEach(function (movie) {
+                        console.log(i);
+                        i++;
+
+                        element.innerHTML = element.innerHTML + '<div class="sve">' +
+                                                                    '<div class="FilmItem">' +
+                                                                              '<div class="Infomation">' +
+                                                                                     '<div class="posterFilm">' +
+                                                                                          '<a href=""> <img src=https://image.tmdb.org/t/p/w185/' + movie.poster_url+ ' alt="' + movie.original_title + 'hspace="3px" vspace="3px"  style="width:150px;height:220px;"></a>' +
+                                                                                     '</div>' +
+                                                                                     '<div class="NaslovIOpis" >' +
+                                                                                          '<div class="Naslov"> Title: ' + movie.original_title +
+                                                                                          '</div>' +
+                                                                                          '<div class="releaseDate"><b>Release date:</b> ' + movie.release_date +
+                                                                                          '</div>' +
+                                                                                          '<div class="cast"><b>Cast:</b> ' + movie.cast +
+                                                                                          '</div>' +
+                                                                                          '<div class="Opis"></br><b>Overwiev:</b></br> ' + movie.overview +
+                                                                                          '</div>' +
+                                                                                      '</div>' +
+                                                                                      '<div class="rating" style="float:left;margin-right:10px;margin-top:10px;">' +
+                                                                                      '<img src="/Content/IMDb.png" style="width:50px; height:30px;margin-top:-1.5px;">' + movie.vote_average +
+                                                                                      '<img src="/Content/youtube.png" style="width:35px;height:22px;margin-top:-2px;margin-left:15px;border-right:1px solid black;">' +
+                                                                                      "<button type='button' style='background-color:#e64a41;border:none;color:white;' onclick='showTrailer(" + movie.themoviedb_id + ',' + JSON.stringify(movie.trailer) + ")'>Watch Trailer!</button>" +
+                                                                                      '</div>' +
+                                                                              '</div>' +
+                                                                    '</div>' +
+                                                                    '<div class="Trailer" id="' + movie.themoviedb_id + '">' +
+                                                                    '</div>' +
+                                                                '</div>';
+                    });
+                } else {
+                }
+           
+            }
+        });
+    }
+
+    showTrailer = function(id, trailer)
+    {
+        document.getElementById(id).innerHTML = '<iframe display:block title="YouTube video player" class="youtube-player" type="text/html" src=http://www.youtube.com/embed/' + trailer + ' width="540" height="390"  frameborder="0" allowFullScreen></iframe>';
+        toggleOnOff(id);
+    }
     giveMeMyMovies();
 
     FB.api('/me/picture?height=30&width=30', function (response) {
@@ -252,119 +333,135 @@ function showData() {
     //*****
     //****
 
-    var genre = { genre_id: "", genre_type: "" };
-    $.getJSON('http://api.themoviedb.org/3/genre/movie/list?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1', { format: "json" })
-        .done(function (genreList)
+    collectGenres = function()
         {
-            genreList.genres.forEach(function (entry) {
-                resetGenreInfo();
-                genre.genre_id += entry.id;
-                genre.genre_type += entry.name;
-                //console.log(genre);
-                checkValidId(genre, genreUrl, entry.id);
-            })
-        })
+            var genre = { genre_id: "", genre_type: "" };
+            $.getJSON('http://api.themoviedb.org/3/genre/movie/list?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1', { format: "json" })
+                .done(function (genreList)
+                {
+                    genreList.genres.forEach(function (entry) {
+                        resetGenreInfo();
+                        genre.genre_id += entry.id;
+                        genre.genre_type += entry.name;
+                        //console.log(genre);
+                        checkValidId(genre, genreUrl, entry.id);
+           })
+       })
+    }
     
- //******Popunjavanje baze filmovima*******
- //   results = []
- //   for (i = 200; i <= 210; i++) {
- //       $.getJSON('http://api.themoviedb.org/3/movie/top_rated?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1&page=' + i.toString(), { format: "json" }).done(function (obj) {
- //           results.push(obj);
- //           //console.log(obj.results);            
- //           obj.results.forEach(function (entry)
- //           {
- //               var detailMovieInfoUrl = 'http://api.themoviedb.org/3/' + 'movie/' + entry.id + '/credits' + '?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1';
- //               $.getJSON(detailMovieInfoUrl, { format: "json" })
- //               .done(function (detailInfo) {
- //
- //               resetMovieInfo();
- //               movieInfo.themoviedb_id += entry.id;
- //               movieInfo.genreIDs += '{' + entry.genre_ids + '}';
- //               movieInfo.original_title += entry.original_title;
- //               movieInfo.overview += entry.overview;
- //               movieInfo.release_date += entry.release_date;
- //               movieInfo.vote_average += entry.vote_average;
- //               movieInfo.cast += detailInfo.cast[0].name + ", " + detailInfo.cast[1].name + ", " + detailInfo.cast[2].name;
- //               movieInfo.crew += detailInfo.crew[0].name + ", " + detailInfo.crew[1].name + ", " + detailInfo.crew[2].name;
- //               movieInfo.trailer += "";
- //               checkValidId(movieInfo, movieUrl, movieInfo.themoviedb_id);
- //
- //               })
- //           })
- //       })
- //   }
+    //******Popunjavanje baze filmovima*******
+    fillDatabaseWithMovies = function () {       
+          results = []
+          for (i = 60; i <= 70; i++) {
+              $.getJSON('http://api.themoviedb.org/3/movie/top_rated?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1&page=' + i.toString(), { format: "json" }).done(function (obj) {
+                  results.push(obj);
+                  //console.log(obj.results);            
+                  obj.results.forEach(function (entry)
+                  {
+                      var detailMovieInfoUrl = 'http://api.themoviedb.org/3/' + 'movie/' + entry.id + '/credits' + '?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1';
+                      $.getJSON(detailMovieInfoUrl, { format: "json" })
+                      .done(function (detailInfo) {
+                          var movieTrailerUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&key=AIzaSyAVUHIT23VFvUNSfVDcblA5opQZkQ7SE94&q=' + entry.original_title;
+                          $.getJSON(movieTrailerUrl, { format: "json" })
+                      .done(function (movieTrailer) {                         
+                          resetMovieInfo();
+                          movieInfo.genreIDs = {};
+                          var i = 0;
+                          entry.genre_ids.forEach(function (genre) {
+                              movieInfo.genreIDs[i] = { ID: genre };
+                              i++
+                          })
+                          i = 0;
+                          movieInfo.themoviedb_id += entry.id;
+                          movieInfo.original_title += entry.original_title;
+                          movieInfo.overview += entry.overview;
+                          movieInfo.release_date += entry.release_date;
+                          movieInfo.vote_average += entry.vote_average;
+                          movieInfo.cast += detailInfo.cast[0].name + ", " + detailInfo.cast[1].name + ", " + detailInfo.cast[2].name;
+                          movieInfo.crew += detailInfo.crew[0].name + ", " + detailInfo.crew[1].name + ", " + detailInfo.crew[2].name;
+                          movieInfo.trailer += movieTrailer.items[0].id.videoId;
+                          movieInfo.poster_url += entry.poster_path;
 
+                      console.log(movieInfo);
+                      checkValidId(movieInfo, movieUrl, movieInfo.themoviedb_id);
+                      });
+                      })
+                  })
+              })
+          }
+    }
+    //******************************
 
-    FB.api('/me/movies', function (response) {        
-        response.data.forEach(function (entry) {         
-            //userInfo.Movies += entry.id+'#';
-            var a = entry.id;
-            FB.api(a + '/picture?width=130&height=200', function (response) {
-                var element = document.getElementById("UserMovies");
-                var myurl = response.data.url;
+  FB.api('/me/movies', function (response) {        
+      response.data.forEach(function (entry) {         
+          //userInfo.Movies += entry.id+'#';
+          var a = entry.id;
+          FB.api(a + '/picture?width=130&height=200', function (response) {
+              var element = document.getElementById("UserMovies");
+              var myurl = response.data.url;
 
-                FB.api(a, { fields: 'link' }, function (response) {
-                    //**************
-                    var url = 'http://api.themoviedb.org/3/',
-                    mode = 'search/movie?query=',
-                    input,
-                    movieName,
-                    key = '&api_key=dbe4d58f24fb7262fd2fd134e6e21ea1';
-                    var input = entry.name,
-                    movieName = encodeURI(input);
-                    var finalUrl = url + mode + movieName + key;
-                    var youTubeKey = 'AIzaSyAVUHIT23VFvUNSfVDcblA5opQZkQ7SE94';
-                    
-                    //*************
-                    
-                    $.getJSON(finalUrl, { format: "json" })
-                        .done(function (data) {                            
-                            var detailMovieInfoUrl = url + 'movie/' + data.results[0].id + '/credits' + '?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1';
-                            $.getJSON(detailMovieInfoUrl, { format: "json" })
-                            .done(function (detailInfo) {
-                                var movieTrailerUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&key=AIzaSyAVUHIT23VFvUNSfVDcblA5opQZkQ7SE94&q=' + movieName;
-                                $.getJSON(movieTrailerUrl, { format: "json" })
-                            .done(function (movieTrailer)
-                            {
-                            //   resetMovieInfo();
-                            //   movieInfo.themoviedb_id += data.results[0].id;
-                            //   movieInfo.genreIDs += '{' + data.results[0].genre_ids + '}';
-                            //   movieInfo.original_title += data.results[0].original_title;
-                            //   movieInfo.overview += data.results[0].overview;
-                            //   movieInfo.release_date += data.results[0].release_date;
-                            //   movieInfo.vote_average += data.results[0].vote_average;
-                            //   movieInfo.cast += detailInfo.cast[0].name + ", " + detailInfo.cast[1].name + ", " + detailInfo.cast[2].name;
-                            //   movieInfo.crew += detailInfo.crew[0].name + ", " + detailInfo.crew[1].name + ", " + detailInfo.crew[2].name;
-                            //   movieInfo.trailer += movieTrailer.items[0].id.videoId;                             
-                            //   checkValidId(movieInfo, movieUrl, movieInfo.themoviedb_id);                               
+              FB.api(a, { fields: 'link' }, function (response) {
+                  //**************
+                  var url = 'http://api.themoviedb.org/3/',
+                  mode = 'search/movie?query=',
+                  input,
+                  movieName,
+                  key = '&api_key=dbe4d58f24fb7262fd2fd134e6e21ea1';
+                  var input = entry.name,
+                  movieName = encodeURI(input);
+                  var finalUrl = url + mode + movieName + key;
+                  var youTubeKey = 'AIzaSyAVUHIT23VFvUNSfVDcblA5opQZkQ7SE94';
+                  
+                  //*************
+                  
+                  $.getJSON(finalUrl, { format: "json" })
+                      .done(function (data) {                            
+                          var detailMovieInfoUrl = url + 'movie/' + data.results[0].id + '/credits' + '?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1';
+                          $.getJSON(detailMovieInfoUrl, { format: "json" })
+                          .done(function (detailInfo) {
+                              var movieTrailerUrl = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&key=AIzaSyAVUHIT23VFvUNSfVDcblA5opQZkQ7SE94&q=' + movieName;
+                              $.getJSON(movieTrailerUrl, { format: "json" })
+                          .done(function (movieTrailer)
+                          {
+                              //   resetMovieInfo();
+                              //   movieInfo.themoviedb_id += data.results[0].id;
+                              //   movieInfo.genreIDs += '{' + data.results[0].genre_ids + '}';
+                              //   movieInfo.original_title += data.results[0].original_title;
+                              //   movieInfo.overview += data.results[0].overview;
+                              //   movieInfo.release_date += data.results[0].release_date;
+                              //   movieInfo.vote_average += data.results[0].vote_average;
+                              //   movieInfo.cast += detailInfo.cast[0].name + ", " + detailInfo.cast[1].name + ", " + detailInfo.cast[2].name;
+                              //   movieInfo.crew += detailInfo.crew[0].name + ", " + detailInfo.crew[1].name + ", " + detailInfo.crew[2].name;
+                              //   movieInfo.trailer += movieTrailer.items[0].id.videoId;                             
+                              //   checkValidId(movieInfo, movieUrl, movieInfo.themoviedb_id);                               
                                 
-                            //    element.innerHTML = element.innerHTML + '<div class="sve"><div class="FilmItem">' +
-                            //                                                '<div class="Infomation">' +
-                            //                                                       '<div class="posterFilm">' +
-                            //                                                            '<a href="' + response.link + '"> <img src=' + myurl + ' alt="' + entry.name + 'hspace="3px" vspace="3px"  style="width:150px;height:220px;"></a>' +
-                            //                                                       '</div>' +
-                            //                                                       '<div class="NaslovIOpis" >' +
-                            //                                                            '<div class="Naslov"> Title: ' + entry.name +
-                            //                                                            '</div>' +
-                            //                                                            '<div class="releaseDate"><b>Release date:</b> ' + data.results[0].release_date +
-                            //                                                            '</div>' +
-                            //                                                            '<div class="cast"><b>Cast:</b> ' + movieInfo.cast +
-                            //                                                            '</div>' +
-                            //                                                            '<div class="Opis"></br><b>Overwiev:</b></br> ' + data.results[0].overview +
-                            //                                                            '</div>' +
-                            //                                                        '</div>' +
-                            //                                                        '<div class="rating" style="float:left;margin-right:10px;margin-top:10px;"><img src="/Content/IMDb.png" style="width:50px; height:30px;margin-top:-1.5px;">' + data.results[0].vote_average +
-                            //                                                        '<img src="/Content/youtube.png" style="width:35px;height:22px;margin-top:-2px;margin-left:15px;border-right:1px solid black;"><button type="button" style="background-color:#e64a41;border:none;color:white;" onclick="toggleOnOff(' + movieInfo.themoviedb_id + ')">Watch Trailer!</button></div></div>' +
-                            //                                                 
-                            //                                            '</div><div class="Trailer" id="' + movieInfo.themoviedb_id + '"><iframe display:block title="YouTube video player" class="youtube-player" type="text/html" width="540" height="390" src=http://www.youtube.com/embed/' + movieInfo.trailer + ' frameborder="0" allowFullScreen></iframe></div></div>';
-                            //    
-                            })
-                            })
-                        })
-                    })
+                              //    element.innerHTML = element.innerHTML + '<div class="sve"><div class="FilmItem">' +
+                              //                                                '<div class="Infomation">' +
+                              //                                                       '<div class="posterFilm">' +
+                              //                                                            '<a href="' + response.link + '"> <img src=' + myurl + ' alt="' + entry.name + 'hspace="3px" vspace="3px"  style="width:150px;height:220px;"></a>' +
+                              //                                                       '</div>' +
+                              //                                                       '<div class="NaslovIOpis" >' +
+                              //                                                            '<div class="Naslov"> Title: ' + entry.name +
+                              //                                                            '</div>' +
+                              //                                                            '<div class="releaseDate"><b>Release date:</b> ' + data.results[0].release_date +
+                              //                                                            '</div>' +
+                              //                                                            '<div class="cast"><b>Cast:</b> ' + movieInfo.cast +
+                              //                                                            '</div>' +
+                              //                                                            '<div class="Opis"></br><b>Overwiev:</b></br> ' + data.results[0].overview +
+                              //                                                            '</div>' +
+                              //                                                        '</div>' +
+                              //                                                        '<div class="rating" style="float:left;margin-right:10px;margin-top:10px;"><img src="/Content/IMDb.png" style="width:50px; height:30px;margin-top:-1.5px;">' + data.results[0].vote_average +
+                              //                                                        '<img src="/Content/youtube.png" style="width:35px;height:22px;margin-top:-2px;margin-left:15px;border-right:1px solid black;"><button type="button" style="background-color:#e64a41;border:none;color:white;" onclick="toggleOnOff(' + movieInfo.themoviedb_id + ')">Watch Trailer!</button></div></div>' +
+                              //                                                 
+                              //                                            '</div><div class="Trailer" id="' + movieInfo.themoviedb_id + '"><iframe display:block title="YouTube video player" class="youtube-player" type="text/html" width="540" height="390" src=http://www.youtube.com/embed/' + movieInfo.trailer + ' frameborder="0" allowFullScreen></iframe></div></div>';
+                              //    
+                          });
+                          });
+                      });
+              });
                 });
             });
-    });
+  });
     
 
 
@@ -382,14 +479,10 @@ function showData() {
             //data: JSON.stringify(data.Facebook_ID),
             success: function (valid) {
                 if (valid) {
-                    JSON.stringify(valid);
-                    console.log(valid);
-                    console.log("ASLASDA");
                 } else {
                 }
             }
         });
-
     }
 
     function getFromDataBase(url)
@@ -411,6 +504,7 @@ function showData() {
         movieInfo.crew = "";
         movieInfo.trailer = "";
         movieInfo.genreIDs = "";
+        movieInfo.poster_url = "";
     }
 
     resetGenreInfo = function()
