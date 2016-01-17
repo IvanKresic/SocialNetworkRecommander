@@ -54,13 +54,15 @@ namespace DmLaboratorij_1.Controllers
         [ResponseType(typeof(MovieModel))]
         public async Task<List<MovieModel>> Get(string id)
         {
+            string[] temp;
+            temp = id.Split(',');
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");
             var mongoDbServer = mongoDbClient.GetDatabase("SocialNetworks");
 
             List<MovieModel> selectedMovies = new List<MovieModel>();
             var collection = mongoDbServer.GetCollection<BsonDocument>("MovieInfo");
-            var filter = Builders<BsonDocument>.Filter.Eq("genreIDs", id);
-            var result = await collection.Find(filter).Limit(50).Sort(Builders<BsonDocument>.Sort.Ascending("vote_avarage").Descending("release_date")).ToListAsync();
+            var filter = Builders<BsonDocument>.Filter.Eq("genreIDs", temp[0]);
+            var result = await collection.Find(filter).Limit(int.Parse(temp[1])).Sort(Builders<BsonDocument>.Sort.Ascending("vote_avarage").Descending("release_date")).ToListAsync();
             foreach (BsonDocument item in result)
             {
                 MovieModel movie = new MovieModel();
