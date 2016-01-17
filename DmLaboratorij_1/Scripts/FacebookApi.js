@@ -281,7 +281,7 @@ function showData() {
             });
             setTimeout(myFunction, 10000);
             i = 0;
-            setTimeout(checkValidId(userInfo, userUrl, userInfo.Facebook_ID), 5000);
+            checkValidId(userInfo, userUrl, userInfo.Facebook_ID);
         });
 
         myFunction = function () {
