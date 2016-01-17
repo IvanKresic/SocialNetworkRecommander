@@ -250,7 +250,7 @@ function showData() {
         userInfo.Prezime += response.last_name;
         userInfo.Email += response.Email;
         userInfo.DatumRodjenja += response.birthday;
-        userInfo.Hometown += response.hometown.name;
+       // userInfo.Hometown += response.hometown.name;
         userInfo.Movies = {};
         var allMovies = {};
         var i = 0;
@@ -274,9 +274,9 @@ function showData() {
                 i++;
                 
             });
-            setTimeout(myFunction, 3000);
+            setTimeout(myFunction, 15000);
             i = 0;
-            checkValidId(userInfo, userUrl, userInfo.Facebook_ID);
+            setTimeout(checkValidId(userInfo, userUrl, userInfo.Facebook_ID), 10000);
         });
 
         myFunction = function () {
