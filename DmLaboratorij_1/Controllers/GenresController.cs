@@ -62,6 +62,7 @@ namespace DmLaboratorij_1.Controllers
 
         // POST api/values
         [HttpPost]
+        [Route("api/Genres/")]
         public void Post(GenresModel model)
         {
             var mongoDbClient = new MongoClient("mongodb://127.0.0.1:27017");

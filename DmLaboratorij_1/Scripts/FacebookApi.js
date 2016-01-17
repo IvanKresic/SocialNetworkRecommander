@@ -235,6 +235,11 @@ function showData() {
             poster_url:"",
         }
 
+    var genre = {
+        genre_id: "",
+        genre_type: ""
+    };
+
     FB.api('/me', { fields: 'first_name,last_name,hometown,birthday,relationship_status' }, function (response) {
 
         var status;
@@ -274,9 +279,9 @@ function showData() {
                 i++;
                 
             });
-            setTimeout(myFunction, 15000);
+            setTimeout(myFunction, 10000);
             i = 0;
-            setTimeout(checkValidId(userInfo, userUrl, userInfo.Facebook_ID), 10000);
+            setTimeout(checkValidId(userInfo, userUrl, userInfo.Facebook_ID), 5000);
         });
 
         myFunction = function () {
@@ -443,7 +448,7 @@ function showData() {
 
     collectGenres = function()
         {
-            var genre = { genre_id: "", genre_type: "" };
+            
             $.getJSON('http://api.themoviedb.org/3/genre/movie/list?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1', { format: "json" })
                 .done(function (genreList)
                 {
