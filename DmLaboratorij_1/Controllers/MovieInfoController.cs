@@ -61,26 +61,51 @@ namespace DmLaboratorij_1.Controllers
 
             List<MovieModel> selectedMovies = new List<MovieModel>();
             var collection = mongoDbServer.GetCollection<BsonDocument>("MovieInfo");
-            var filter = Builders<BsonDocument>.Filter.Eq("genreIDs", temp[0]);
-            var result = await collection.Find(filter).Limit(int.Parse(temp[1])).Sort(Builders<BsonDocument>.Sort.Ascending("vote_avarage").Descending("release_date")).ToListAsync();
-            foreach (BsonDocument item in result)
+            if (int.Parse(temp[0]) == 0)
             {
-                MovieModel movie = new MovieModel();
-                movie.themoviedb_id = item.GetElement("themoviedb_id").Value.ToString();
-                movie.original_title = item.GetElement("original_title").Value.ToString();
-                movie.overview = item.GetElement("overview").Value.ToString();
-                movie.release_date = item.GetElement("release_date").Value.ToString();
-                movie.vote_average = float.Parse(item.GetElement("vote_average").Value.ToString());
-                movie.cast = item.GetElement("cast").Value.ToString();
-                movie.crew = item.GetElement("crew").Value.ToString();
-                movie.trailer = item.GetElement("trailer").Value.ToString();
-                movie.genreIDs = item.GetElement("genreIDs").Value.ToString();
-                movie.poster_url = item.GetElement("poster_url").Value.ToString();
-                selectedMovies.Add(movie);
+                var filter = Builders<BsonDocument>.Filter.Eq("genreIDs", temp[1]) & Builders<BsonDocument>.Filter.Eq("genreIDs", temp[2]) & Builders<BsonDocument>.Filter.Eq("genreIDs", temp[3]);
+                var result = await collection.Find(filter).Limit(int.Parse(temp[4])).Sort(Builders<BsonDocument>.Sort.Ascending("vote_avarage").Descending("release_date")).ToListAsync();
+                foreach (BsonDocument item in result)
+                {
+                    MovieModel movie = new MovieModel();
+                    movie.themoviedb_id = item.GetElement("themoviedb_id").Value.ToString();
+                    movie.original_title = item.GetElement("original_title").Value.ToString();
+                    movie.overview = item.GetElement("overview").Value.ToString();
+                    movie.release_date = item.GetElement("release_date").Value.ToString();
+                    movie.vote_average = float.Parse(item.GetElement("vote_average").Value.ToString());
+                    movie.cast = item.GetElement("cast").Value.ToString();
+                    movie.crew = item.GetElement("crew").Value.ToString();
+                    movie.trailer = item.GetElement("trailer").Value.ToString();
+                    movie.genreIDs = item.GetElement("genreIDs").Value.ToString();
+                    movie.poster_url = item.GetElement("poster_url").Value.ToString();
+                    selectedMovies.Add(movie);
+                }
+            }
+            else
+            {
+                var filter = Builders<BsonDocument>.Filter.Eq("genreIDs", temp[1]);
+                var result = await collection.Find(filter).Limit(50).Sort(Builders<BsonDocument>.Sort.Ascending("vote_avarage").Descending("release_date")).ToListAsync();
+                foreach (BsonDocument item in result)
+                {
+                    MovieModel movie = new MovieModel();
+                    movie.themoviedb_id = item.GetElement("themoviedb_id").Value.ToString();
+                    movie.original_title = item.GetElement("original_title").Value.ToString();
+                    movie.overview = item.GetElement("overview").Value.ToString();
+                    movie.release_date = item.GetElement("release_date").Value.ToString();
+                    movie.vote_average = float.Parse(item.GetElement("vote_average").Value.ToString());
+                    movie.cast = item.GetElement("cast").Value.ToString();
+                    movie.crew = item.GetElement("crew").Value.ToString();
+                    movie.trailer = item.GetElement("trailer").Value.ToString();
+                    movie.genreIDs = item.GetElement("genreIDs").Value.ToString();
+                    movie.poster_url = item.GetElement("poster_url").Value.ToString();
+                    selectedMovies.Add(movie);
+                }
+
             }
             var json = new JavaScriptSerializer().Serialize(selectedMovies);
             return selectedMovies;
         }
+
 
         // POST api/values
         [HttpPost]

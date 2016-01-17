@@ -280,6 +280,7 @@ function showData() {
         });
 
         myFunction = function () {
+            console.log(genres);
             var sortable = [];
             for (var genre in genres)
                 sortable.push([genre, genres[genre]])
@@ -287,11 +288,8 @@ function showData() {
             console.log(sortable[0][0]);
             console.log(sortable[1][0]);
             console.log(sortable[2][0]);
-
-            getThisMovies(sortable[0][0], 20);
-            getThisMovies(sortable[1][0], 10);
-            getThisMovies(sortable[2][0], 10);
-            getThisMovies(sortable[3][0], 10);
+            var sendThis = 0+','+ sortable[0][0] + ',' + sortable[1][0] +','+ sortable[2][0];
+            getThisMovies(sendThis, 50);
 
             function getThisMovies(id, limit) {
                 var element = document.getElementById("UserMovies");
@@ -359,7 +357,7 @@ function showData() {
                 if (valid) {
                     console.log("AAAAA");
                     valid.forEach(function (category) {
-                        document.getElementById('listOfCategories').innerHTML += "<li id='" + category.genre_id + "'class='categoryList' onClick=thisCategory('" + category.genre_id+ "')>"
+                        document.getElementById('listOfCategories').innerHTML += " <li id='" + category.genre_id + "'class='categoryList' onClick=thisCategory('" + category.genre_id + "')>"
                         +category.genre_type+"</li>";
                     });
                 } else {
@@ -372,11 +370,10 @@ function showData() {
 
     thisCategory = function(id)
     {
-        genreID = id;
+        genreID =  id;
         var i = 0;
-        
+        data = 1 + ',' + id;
         var element = document.getElementById("UserMovies");
-        var data = id + ',' + 50;
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -461,9 +458,18 @@ function showData() {
     }
     
     //******Popunjavanje baze filmovima*******
-    fillDatabaseWithMovies = function () {       
+    test = function(counter) {
+        if (counter < 214)
+        {
+            setTimeout(fillDatabaseWithMovies(counter), 1000);            
+        }
+    }
+
+    fillDatabaseWithMovies = function (counter) {
+        
           results = []
-          for (i = 60; i <= 70; i++) {
+          for (i = counter; i <= counter + 1; i++) {
+              console.log(counter);
               $.getJSON('http://api.themoviedb.org/3/movie/top_rated?api_key=dbe4d58f24fb7262fd2fd134e6e21ea1&page=' + i.toString(), { format: "json" }).done(function (obj) {
                   results.push(obj);
                   //console.log(obj.results);            
@@ -500,6 +506,9 @@ function showData() {
                   })
               })
           }
+          counter++;
+          if (counter < 214) { test(counter); };
+          
     }
     //******************************
 
